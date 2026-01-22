@@ -1,0 +1,127 @@
+:root {
+    --green-dark: #2f6f4e;
+    --green-main: #4caf50;
+    --green-light: #e8f5e9;
+    --text-dark: #2c2c2c;
+}
+
+body {
+    color: var(--text-dark);
+    background-color: var(--green-light);
+}
+
+.hero-section {
+    background:
+        linear-gradient(
+            rgba(0, 80, 40, 0.55),
+            rgba(0, 80, 40, 0.55)
+        ), 
+        url("https://images.unsplash.com/photo-1546069901-ba9599a7e63c");
+    background-size: cover;
+    background-position: center;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+
+.hero-overlay {
+    background: linear-gradient(
+        to bottom
+        rgba(0, 80, 40, 0) 0%,
+        rgba(0, 80, 40, 0.65) 35%,
+        rgba(0, 80, 40, 0.65) 65%,
+        rgba(0, 80, 40, 0) 100%
+    );
+    width: 100%;
+    padding: 4rem 0;
+}
+
+.hero-section h1 {
+    letter-spacing: 0.03em;
+}
+
+.hero-section p {
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+}
+
+.hero-section h1,
+.hero.section p {
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+#timeFilter option {
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 16px 30px rgba(0,0,0,0.08);
+}
+
+.btn-primary {
+    background-color: #2F7D32;
+    border: none;
+    border-radius: 9px;
+    padding: 8px 18px;
+}
+
+.btn-success {
+    background-color: var(--green-main);
+    border-color: var(--green-dark);
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active {
+    background-color: var(--green-dark);
+    border-color: var(--green-dark);
+    box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.4);
+}
+
+.ingredients-box {
+    background: #E8F5E9;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.form-control:focus,
+.form-select:focus,
+.btn:focus-visible {
+    border-color: var(--green-main);
+    box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.35);
+    outline: none;
+}
+
+#ingredientsSuggestions .list-group-item {
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+#ingredientsSuggestions .list-group-item:hover {
+    background-color: var(--green-light);
+}
+
+#ingredientSuggestions .list-group-item.active,
+#ingredientSuggestions .list-group-item:focus,
+#ingredientSuggestions .list-group-item:focus-visible,
+#ingredientSuggestions .list-group-item-action.active,
+#ingredientSuggestions .list-group-item-action:focus {
+    background-color: var(--green-main) !important;
+    border-color: var(--green-main) !important;
+    color: #fff !important;
+    outline: none;
+}
+
+.form-check-input:checked {
+    background-color: var(--green-main);
+    border-color: var(--green-main);
+}
+
+.form-check-input:focus {
+    border-color: var(--green-main);
+    box-shadow: 0 0 0 0.2rem rgba(76,175, 80, 0.35);
+}
