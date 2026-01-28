@@ -1,6 +1,6 @@
 :root {
     --green-dark: #2f6f4e;
-    --green-main: #4caf50;
+    --green-main: #409e44;
     --green-light: #e8f5e9;
     --text-dark: #2c2c2c;
 }
@@ -27,7 +27,7 @@ body {
 
 .hero-overlay {
     background: linear-gradient(
-        to bottom
+        to bottom,
         rgba(0, 80, 40, 0) 0%,
         rgba(0, 80, 40, 0.65) 35%,
         rgba(0, 80, 40, 0.65) 65%,
@@ -59,27 +59,56 @@ body {
 .card {
     border: none;
     border-radius: 16px;
-    box-shadow: 0 16px 30px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: 
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
-.btn-primary {
-    background-color: #2F7D32;
-    border: none;
-    border-radius: 9px;
-    padding: 8px 18px;
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.15);
 }
 
-.btn-success {
+.card:active {
+    transform: translateY(-4px);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-radius: 16px 16px 0 0;
+}
+
+.card-body {
+    padding: 1.25rem 1.25rem 1.5rem;
+}
+
+.btn-action {
     background-color: var(--green-main);
-    border-color: var(--green-dark);
+    border-color: var(--green-main);
+    border: none;
+    color: #fff;
+    transition: 
+        transform 0.3s ease,
+        background-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
-.btn-success:hover,
-.btn-success:focus,
-.btn-success:active {
+.btn-action:hover {
     background-color: var(--green-dark);
     border-color: var(--green-dark);
-    box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.4);
+    transform: scale(0.97);
+    box-shadow: 0 6px 16px rgba(76,175,80,0.35);
+}
+
+.btn-action:focus,
+.btn-action:focus-visible,
+.btn-action:active {
+    background-color: var(--green-dark);
+    border-color: var(--green-dark);
+    outline: none;
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.35);
 }
 
 .ingredients-box {
@@ -96,7 +125,7 @@ body {
     outline: none;
 }
 
-#ingredientsSuggestions .list-group-item {
+#ingredientSuggestions .list-group-item {
     cursor: pointer;
     transition: background-color 0.15s ease;
 }
@@ -124,4 +153,126 @@ body {
 .form-check-input:focus {
     border-color: var(--green-main);
     box-shadow: 0 0 0 0.2rem rgba(76,175, 80, 0.35);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.spinner-border {
+    color: var(--green-main);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 50vh;
+    }
+
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+
+    .card-img-top {
+        height: 180px;
+    }
+
+    #ingredientForm .col-md-8,
+    #ingredientForm .col-md-4 {
+        width: 100%;
+    }
+
+    .card-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .card-text.text-danger {
+        display: none;
+    }
+}
+
+/*.favorite-btn {
+    transition: 
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.favorite-btn:hover {
+    transform: scale(0.97);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+}
+
+/*#searchRecipesButton {
+    font-size: 1.1rem;
+    padding: 0.6rem 1.4rem;
+    box-shadow: 0 8px 20px rgba(76,175,80,0.35);
+}
+#searchRecipesButton:hover {
+    transform: translateY(-2px);
+}*/
+
+.favorites-bar {
+    margin-top: 2.5rem;
+    margin-bottom: 3.5rem;
+    text-align: center;
+}
+
+.favorites-bar .btn {
+    font-size: 1rem;
+    color: var(--text-dark);
+    padding: 0.6rem 1.4rem;
+    border-radius: 10px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transition: 
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background-color 0.3s ease;
+}
+
+.favorites-bar .btn:hover {
+    transform: scale(0.97);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+#favCount {
+    font-weight: 600;
+    /*margin-left: 0.25rem;*/
+}
+
+.favorite-btn {
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.favorite-btn:active {
+    transform: scale(1.08);
+}
+
+.favorite-btn.btn-danger {
+    animation: favPop 0.3s ease;
+}
+
+@keyframes favPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+#ingredientList li {
+    animation: addItem 0.2s ease;
+}
+
+@keyframes addItem {
+    from {
+        transform: scale(0.96);
+        opacity: 0.7;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }

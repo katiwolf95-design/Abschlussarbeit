@@ -27,7 +27,7 @@
                 </p>
 
                 <button
-                    class="btn btn-success btn-lg"
+                    class="btn btn-success btn-action btn-lg"
                     onclick="document.getElementById('ingredientInput').focus()">
                     Koch was draus 🍳
                 </button>
@@ -36,8 +36,14 @@
     </section>
 
     <main class="container">
-        <section class="mb-4">
-            <h2 class="mb-3">Deine Zutaten</h2>
+        <div class="favorites-bar">
+            <button class="btn btn-outline-light" onclick="showFavorites()">
+                ♥ Meine Favoriten (<span id="favCount">0</span>)
+            </button>
+        </div>
+
+        <section class="mb-4 ingredient-box">
+            <h2 class="mb-3">Was hast Du da?</h2>
 
             <form id="ingredientForm" class="row g-2">
                 <div class="col-md-8">
@@ -45,12 +51,12 @@
                     type="text"
                     id="ingredientInput"
                     class="form-control"
-                    placeholder="Zutat eingeben (z.B. Tomaten, Käse, etc.)"
+                    placeholder="z.B. Tomaten, Käse, irgendwas von gestern…"
                     required>
                 </div>
 
                 <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary w-100">
+                    <button type="submit" class="btn btn-primary btn-action w-100">
                         Zutat hinzufügen
                     </button>
                 </div>
@@ -63,6 +69,10 @@
 
             <ul id="ingredientList" class="list-group mt-3">
             </ul>
+
+            <button id="clearAllBtn" class="btn btn-outline-danger btn-sm mt-2" style="display: none;">
+                Alle Zutaten löschen
+            </button>
 
             <!-- Grundzutaten -->
             <div class="mt-4">
@@ -81,6 +91,11 @@
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="baseOil" value="öl">
                     <label class="form-check-label" for="baseOil">Öl</label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="baseTomatoPaste" value="tomatenmark">
+                    <label class="form-check-label" for="baseOil">Tomatenmark</label>
                 </div>
 
                 <div class="form-check">
@@ -128,13 +143,13 @@
         <section class="mb-4">
             <button 
                 id="searchRecipesButton" 
-                class="btn btn-success">
-                Rezepte suchen
+                class="btn btn-success btn-action">
+                Los geht’s 🍽️
             </button>
         </section>
 
         <section>
-            <h2 class="mb-3">Gefundenen Rezepte</h2>
+            <h2 class="mb-3">Gefundene Rezepte</h2>
             <div 
                 id="recipeResults" 
                 class="row row-cols-md-3 g-4">

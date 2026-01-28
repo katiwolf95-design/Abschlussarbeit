@@ -52,6 +52,30 @@ function isFavorite(recipeId) {
     return favorites.some(r => r.id === recipeId);
 }
 
+//Favoriten zeigen
+function showFavorites() {
+    const favorites = getFavorites();
+
+    if (favorites.length === 0) {
+        recipeResults.innerHTML = `
+            <p class="text-center text-muted">
+                Noch keine Favoriten gespeichert.
+            </p>
+        `;
+        return;
+    }
+
+    displayRecipesWithMatches(favorites);
+    recipeResults.scrollIntoView({ behavior: "smooth" });
+}
+
+//Favoritenzähler aktualisieren
+function updateFavCount() {
+    document.getElementById('favCount').textContent = getFavorites().length;
+}
+
+
+
 // ==========================
 // ZUTATEN-LOGIK
 // (Hinzufügen, Entfernen, Vorschläge)
@@ -105,7 +129,15 @@ const ingredientSuggestions = [
     "Hähnchen", 
     "Karotte",
     "Putenfleisch",
-    "Weißkohl"
+    "Weißkohl",
+    "Zucchini",
+    "Aubergine",
+    "Fetakäse",
+    "Pute",
+    "Putenbrust",
+    "Frischkäse",
+    "Mozzarella",
+    "Parmesan"
 ];
 
 // Formular absenden - Zutat hinzufügen
@@ -134,7 +166,7 @@ ingredientForm.addEventListener('submit', function(event) {
 //Vorschläge beim Tippen anzeigen
 const suggestionsList = document.getElementById('ingredientSuggestions');
 
-//Keyboard-Navigatin für Vorschläge
+//Keyboard-Navigation für Vorschläge
 let activeSuggestionsIndex = -1;
 
 //Zeigt passende Zutatenvorschläge während der Eingabe an
@@ -233,6 +265,8 @@ function addIngredientFromSuggestion(ingredient) {
 function updateIngredientList() {
     ingredientList.innerHTML = '';
 
+    clearAllBtn.style.display = ingredients.length > 0 ? 'block' : 'none';
+
     ingredients.forEach(function(ingredient, index) {
         const listItem = document.createElement('li');
         listItem.className = "list-group-item d-flex justify-content-between align-items-center";
@@ -259,6 +293,14 @@ function removeIngredient(index) {
     ingredientInput.focus();
 }
 
+//"Alle Zutaten löschen" Button
+const clearAllBtn = document.getElementById("clearAllBtn");
+
+clearAllBtn.addEventListener("click", function() {
+    ingredients = [];
+    updateIngredientList();
+    clearAllBtn.style.display = "none";
+});
 
 // ==========================
 // API-KOMMUNIKATION (Spoonacular)
@@ -314,6 +356,17 @@ async function loadRecipeDetails(recipeId) {
 
 //Suche starten
 searchRecipesButton.addEventListener('click', async () => {
+
+    //Grundzutaten zu imgredients hinzufügen
+    const baseIngredients = document.querySelectorAll('.form-check-input:checked');
+
+    baseIngredients.forEach(checkbox => {
+        const ingredient = checkbox.value;
+        if (!ingredients.includes(ingredient)) {
+            ingredients.push(ingredient);
+        }
+    }); 
+
     if (ingredients.length === 0) {
         alert("Bitte füge mindestens eine Zutat hinzu.");
         return;
@@ -358,7 +411,7 @@ function displayRecipesWithMatches(recipes) {
                 <button 
                     class="btn btn-sm favorite-btn position-absolute top-0 end-0 m-2
                     ${isFavorite(recipe.id) ? 'btn-danger' : 'btn-outline-danger'}"
-                    title="Zu Favoriten hinzufügen">
+                    title="Merken für später">
                     ♥
                 </button>
                 
@@ -373,12 +426,19 @@ function displayRecipesWithMatches(recipes) {
                     </h5>
 
                     <p class="card-text">
-                        ${recipe.usedIngredientCount} passende Zutaten, <br>
-                        ${recipe.missedIngredientCount} fehlen
-                    </p>        
+                        <strong>✅ Vorhanden (${recipe.usedIngredientCount}):</strong><br>
+                        ${recipe.usedIngredients.map(i => i.name).join(', ')}
+                    </p>   
+                    
+                    ${recipe.missedIngredientCount > 0 ? `
+                        <p class="card-text text-danger">
+                            <strong>❌ Fehlt (${recipe.missedIngredientCount}):</strong><br>
+                            ${recipe.missedIngredients.map(i => i.name).join(', ')}
+                        </p>
+                    ` : ''}
         
                     <button 
-                        class="btn btn-primary btn-sm">
+                        class="btn btn-primary btn-action btn-sm">
                         Details ansehen
                     </button>   
                 </div>
@@ -400,6 +460,8 @@ function displayRecipesWithMatches(recipes) {
                 favBtn.classList.remove("btn-danger");
                 favBtn.classList.add("btn-outline-danger");
             }
+
+            updateFavCount();
         });
 
         //Details
@@ -414,3 +476,4 @@ function displayRecipesWithMatches(recipes) {
 }                        //Die Rezeptauswahl wurde angepasst, um die Anzahl der übereinstimmenden Zutaten anzuzeigen.
 
 console.log("JS-Datei geladen bis hierhin");
+updateFavCount();
