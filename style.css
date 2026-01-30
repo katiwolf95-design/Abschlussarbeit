@@ -155,65 +155,12 @@ body {
     box-shadow: 0 0 0 0.2rem rgba(76,175, 80, 0.35);
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+.igreident-summary {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
 }
-
-.spinner-border {
-    color: var(--green-main);
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-@media (max-width: 768px) {
-    .hero-section {
-        min-height: 50vh;
-    }
-
-    .hero-section h1 {
-        font-size: 2rem;
-    }
-
-    .card-img-top {
-        height: 180px;
-    }
-
-    #ingredientForm .col-md-8,
-    #ingredientForm .col-md-4 {
-        width: 100%;
-    }
-
-    .card-text {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .card-text.text-danger {
-        display: none;
-    }
-}
-
-/*.favorite-btn {
-    transition: 
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.favorite-btn:hover {
-    transform: scale(0.97);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-}
-
-/*#searchRecipesButton {
-    font-size: 1.1rem;
-    padding: 0.6rem 1.4rem;
-    box-shadow: 0 8px 20px rgba(76,175,80,0.35);
-}
-#searchRecipesButton:hover {
-    transform: translateY(-2px);
-}*/
 
 .favorites-bar {
     margin-top: 2.5rem;
@@ -274,5 +221,67 @@ body {
     to {
         transform: scale(1);
         opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.spinner-border {
+    color: var(--green-main);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 50vh;
+    }
+
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+
+    .card-img-top {
+        height: 180px;
+    }
+
+    #ingredientForm .col-md-8,
+    #ingredientForm .col-md-4 {
+        width: 100%;
+    }
+
+    .card-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .card-text.text-danger {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .ingredient-summary {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        font-size: 0.85rem;
+    }
+
+    .ingredient-summary .ok,
+    .ingredient-summary .missing {
+        white-space: nowrap;
+    }
+
+    .ingredient-summary .ok::after {
+        content: "Zutaten";
+    }
+
+    .ingredient-summary .missing {
+        display: none;
     }
 }

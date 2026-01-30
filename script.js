@@ -27,6 +27,10 @@ const API_KEY = "f90a19952d71418697b679100605c25b";
 const recipeModal = new bootstrap.Modal(
     document.getElementById('recipeModal'));
 
+document.addEventListener('DOMContentLoaded', () => {
+    updateFavCount();
+});
+
 
 // ==========================
 // FAVORITEN (LocalStorage)
@@ -312,16 +316,23 @@ clearAllBtn.addEventListener("click", function() {
  */
 async function loadRecipesFromAPI() {
     const ingredientString = ingredients.join(",");
+    const maxTime = document.getElementById('timeFilter').value;
 
-    const response = await fetch(
+    let url =
         `https://api.spoonacular.com/recipes/findByIngredients` +
         `?ingredients=${ingredientString}` +
         `&number=12` +
         `&ranking=1` +
         `&ignorePantry=true` +
         `&apiKey=${API_KEY}`
-    );
+    ;
 
+    //Zeitfilter hinzufügen, wenn gesetzt
+    if (maxTime > 0) {
+        url += `&maxReadyTime=${maxTime}`;
+    }
+
+    const response = await fetch(url);
     const data =await response.json();
     return data;
 }      //Die API filtert Rezepte serverseitig anhand der Zutaten, was die Client-Logik vereinfacht.
@@ -399,22 +410,23 @@ searchRecipesButton.addEventListener('click', async () => {
 });
 
 //Erstellt dynamisch Rezeptkarten aus den API-Daten
-function displayRecipesWithMatches(recipes) {
+async function displayRecipesWithMatches(recipes) {
     recipeResults.innerHTML = '';
 
-    recipes.forEach(recipe => {
+    for (const recipe of recipes) {
         const col = document.createElement('div');
         col.className = 'col';
 
         col.innerHTML = `
             <div class="card h-100 position-relative">
+                <!-- Favoriten-Button -->
                 <button 
                     class="btn btn-sm favorite-btn position-absolute top-0 end-0 m-2
                     ${isFavorite(recipe.id) ? 'btn-danger' : 'btn-outline-danger'}"
                     title="Merken für später">
                     ♥
                 </button>
-                
+
                 <img 
                     src="${recipe.image}" 
                     class="card-img-top" 
@@ -425,17 +437,18 @@ function displayRecipesWithMatches(recipes) {
                         ${recipe.title}
                     </h5>
 
-                    <p class="card-text">
-                        <strong>✅ Vorhanden (${recipe.usedIngredientCount}):</strong><br>
-                        ${recipe.usedIngredients.map(i => i.name).join(', ')}
-                    </p>   
-                    
-                    ${recipe.missedIngredientCount > 0 ? `
-                        <p class="card-text text-danger">
-                            <strong>❌ Fehlt (${recipe.missedIngredientCount}):</strong><br>
-                            ${recipe.missedIngredients.map(i => i.name).join(', ')}
-                        </p>
-                    ` : ''}
+                    <div class="ingredient-summary">
+                        <span class="ok">
+                            ✅ ${recipe.usedIngredientCount} vorhanden
+                        </span>
+                        ${
+                            recipe.missedIngredientCount > 0
+                            ? `<span class="missing">
+                                ❌ ${recipe.missedIngredientCount} fehlen
+                               </span>`
+                            : ''
+                        }
+                    </div>
         
                     <button 
                         class="btn btn-primary btn-action btn-sm">
@@ -472,8 +485,7 @@ function displayRecipesWithMatches(recipes) {
         });
 
         recipeResults.appendChild(col);
-    });
+    };
 }                        //Die Rezeptauswahl wurde angepasst, um die Anzahl der übereinstimmenden Zutaten anzuzeigen.
 
 console.log("JS-Datei geladen bis hierhin");
-updateFavCount();
